@@ -15,9 +15,8 @@ export async function LoginUser(){
 
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
-    headers.append('Origin','http://localhost:3000');
 
-    await fetch('https://lessoninsteamservices.azurewebsites.net/Login', {
+    await fetch('https://lessoninsteamservices.azurewebsites.net/Register', {
       method: "POST",
       body: JSON.stringify(data),
       headers: headers
