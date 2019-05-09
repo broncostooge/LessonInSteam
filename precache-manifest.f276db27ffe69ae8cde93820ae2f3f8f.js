@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "70d6f36feaa96c7d98182d7c17f03d3a",
+    "revision": "59198e68d4c632681636edc61c34474b",
     "url": "/LessonInSteam/index.html"
   },
   {
-    "revision": "dce1908077035ce183b9",
+    "revision": "a4cb32e24bb25b020cfb",
     "url": "/LessonInSteam/static/css/main.795991f2.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/LessonInSteam/static/js/2.ba199d51.chunk.js"
   },
   {
-    "revision": "dce1908077035ce183b9",
-    "url": "/LessonInSteam/static/js/main.9c31b2c9.chunk.js"
+    "revision": "a4cb32e24bb25b020cfb",
+    "url": "/LessonInSteam/static/js/main.e3db8eb1.chunk.js"
   },
   {
     "revision": "7b7640fa35e3aa8c01da",
