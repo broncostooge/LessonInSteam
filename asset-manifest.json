@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/LessonInSteam/static/css/main.795991f2.chunk.css",
-    "main.js": "/LessonInSteam/static/js/main.e3db8eb1.chunk.js",
-    "main.js.map": "/LessonInSteam/static/js/main.e3db8eb1.chunk.js.map",
+    "main.js": "/LessonInSteam/static/js/main.d9d68629.chunk.js",
+    "main.js.map": "/LessonInSteam/static/js/main.d9d68629.chunk.js.map",
     "runtime~main.js": "/LessonInSteam/static/js/runtime~main.8597475e.js",
     "runtime~main.js.map": "/LessonInSteam/static/js/runtime~main.8597475e.js.map",
     "static/js/2.ba199d51.chunk.js": "/LessonInSteam/static/js/2.ba199d51.chunk.js",
     "static/js/2.ba199d51.chunk.js.map": "/LessonInSteam/static/js/2.ba199d51.chunk.js.map",
     "index.html": "/LessonInSteam/index.html",
-    "precache-manifest.f276db27ffe69ae8cde93820ae2f3f8f.js": "/LessonInSteam/precache-manifest.f276db27ffe69ae8cde93820ae2f3f8f.js",
+    "precache-manifest.dd1a3077b151af8510712921508d0688.js": "/LessonInSteam/precache-manifest.dd1a3077b151af8510712921508d0688.js",
     "service-worker.js": "/LessonInSteam/service-worker.js",
     "static/css/main.795991f2.chunk.css.map": "/LessonInSteam/static/css/main.795991f2.chunk.css.map"
   }
