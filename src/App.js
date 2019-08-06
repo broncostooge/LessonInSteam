@@ -1,11 +1,11 @@
 import React from 'react';
-import CreateUser from './Components/CreateUser';
+import UpdateAndLoadGameInfo from './Components/UpdateAndLoadGameInfo';
 
 function App() {
 
   return (
     <div className="App">
-    <CreateUser />
+    <UpdateAndLoadGameInfo />
     </div>
   );
 }
