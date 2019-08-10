@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import '../index.css';
+import { connect } from 'react-redux';
+import '../../Content/CSS/index.css';
+import { store } from '../../Store/store.js';
 
 class UpdateAndLoadGameInfo extends Component {
     constructor (props) {
         super(props);
-        this.state = {
-            gameList: [],
-            selectedGameTitle: "",
-            selectedGameTime: 0
-        }
 
         document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
         document.getElementById("root").style.backgroundSize = 'cover';
@@ -45,18 +42,12 @@ class UpdateAndLoadGameInfo extends Component {
 
     UpdateGameTitleAndTime(){
         
-        let selectedOptionValue = null;
         const selectObject = document.getElementById("gameList");
-
-        if(selectObject.selectedIndex > -1)
-        {
-            selectedOptionValue = selectObject.options[selectObject.selectedIndex].value;  
-        }
+        let selectedGameTitle = selectObject.options[selectObject.selectedIndex].getAttribute('gamename');
+        let selectedGameTime = selectObject.options[selectObject.selectedIndex].getAttribute('time');
         
-        this.setState((state, props) => {
-            return {selectedGameTitle: selectObject.options[selectObject.selectedIndex].getAttribute('gamename'),
-            selectedGameTime: selectObject.options[selectObject.selectedIndex].getAttribute('time')}
-        })
+        store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: selectedGameTitle })
+        store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: selectedGameTime })
 
     }
 
@@ -80,33 +71,37 @@ class UpdateAndLoadGameInfo extends Component {
           headers: headers
         })
         .then(response => response.json())
-        .then(json => this.setState((state, props) => {
-            return {gameList: json};
-        }));
+        .then(json => {
+            store.dispatch({ type: 'SET_GAME_LIST', gameList: json })
+            store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" })
+            store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 })
+        }
+        );
 
-        this.setState((state, props) => {
-            return {selectedGameTitle: 'All',
-            selectedGameTime: 94327}
-        })
         if(document.getElementById("gameList").length > 0){
             document.getElementById("gameList").selectedIndex = "0";
         }
         document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
+
+        this.UpdateGameTitleAndTime();
     }
 
     render(){
+        const selectedGameTime = store.getState().selectedGameTime;
+        const selectedGameTitle = store.getState().selectedGameTitle;
+        const gameList = store.getState().gameList;
 
-        let gameList = null;
+        let gameListToDisplay = null;
         let allOption = null;
         let selectStyles = {
             display: "none"
         }
 
-        if(this.state.gameList.length > 0){
+        if(gameList.length > 0){
 
             let totalPlaytimeForever = 0;
 
-            gameList = this.state.gameList.map((element, index) => {
+            gameListToDisplay = gameList.map((element, index) => {
                 totalPlaytimeForever += element.playtime_forever;
                 return <option key={index} value={element.appid} gamename={element.name} time={element.playtime_forever}>{element.name} - {element.playtime_forever}</option>;
             });
@@ -118,17 +113,25 @@ class UpdateAndLoadGameInfo extends Component {
             }
             
         }
-
+        
         return(
-            <div>
+        <div>
                 <input id="username" placeholder="Username" type="text"></input>
                 <button onClick={this.UpdateAndLoadGameInfo}>UpdateAndLoadGameInfo</button>
-                <select onChange={this.HandleEvent} id="gameList" style={selectStyles}>{allOption}{gameList}</select>
-                <h1 style={selectStyles}>{this.state.selectedGameTitle}</h1>
-                <h2 style={selectStyles}>{this.state.selectedGameTime} mins</h2>
+                <select onChange={this.HandleEvent} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
+                <h1 style={selectStyles}>{store.getState().selectedGameTitle}</h1>
+                <h2 style={selectStyles}>{store.getState().selectedGameTime} mins</h2>
             </div>
         )
     }
 }
 
-export default UpdateAndLoadGameInfo;
+function mapStateToProps(state) {
+    return { 
+        gameList: state.gameList,
+        selectedGameTitle: state.selectedGameTitle,
+        selectedGameTime: state.selectedGameTime
+    };
+}
+
+export default connect(mapStateToProps)(UpdateAndLoadGameInfo);
