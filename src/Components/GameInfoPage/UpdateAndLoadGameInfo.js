@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../Content/CSS/index.css';
 import { store } from '../../Store/store.js';
+import { UpdateAndLoadGameInfoFromSteamAPI, UpdateGameTitleAndTime } from '../../Utilities/APIUtils.js'
 
 class UpdateAndLoadGameInfo extends Component {
     constructor (props) {
@@ -10,9 +11,7 @@ class UpdateAndLoadGameInfo extends Component {
         document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
         document.getElementById("root").style.backgroundSize = 'cover';
 
-        this.UpdateAndLoadGameInfo = this.UpdateAndLoadGameInfo.bind(this);
         this.HandleEvent = this.HandleEvent.bind(this);
-        this.UpdateGameTitleAndTime = this.UpdateGameTitleAndTime.bind(this);
     }
 
     
@@ -37,53 +36,7 @@ class UpdateAndLoadGameInfo extends Component {
         }
         elementById_root.style.backgroundSize = 'cover';
 
-        this.UpdateGameTitleAndTime();
-    }
-
-    UpdateGameTitleAndTime(){
-        
-        const selectObject = document.getElementById("gameList");
-        let selectedGameTitle = selectObject.options[selectObject.selectedIndex].getAttribute('gamename');
-        let selectedGameTime = selectObject.options[selectObject.selectedIndex].getAttribute('time');
-        
-        store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: selectedGameTitle })
-        store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: selectedGameTime })
-
-    }
-
-    async UpdateAndLoadGameInfo(){
-
-        const userName = document.getElementById("username").value;
-
-        const data = {
-          username: userName
-        }
-      
-        let headers = new Headers();
-      
-        headers.append('Content-Type', 'application/json');
-        headers.append('Accept', 'application/json');
-        headers.append('Access-Control-Allow-Origin', '*');
-
-        await fetch(' http://localhost:57766/UpdateAndLoadUserSteamInfo', {
-          method: "PUT",
-          body: JSON.stringify(data),
-          headers: headers
-        })
-        .then(response => response.json())
-        .then(json => {
-            store.dispatch({ type: 'SET_GAME_LIST', gameList: json })
-            store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" })
-            store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 })
-        }
-        );
-
-        if(document.getElementById("gameList").length > 0){
-            document.getElementById("gameList").selectedIndex = "0";
-        }
-        document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
-
-        this.UpdateGameTitleAndTime();
+        UpdateGameTitleAndTime();
     }
 
     render(){
@@ -117,7 +70,7 @@ class UpdateAndLoadGameInfo extends Component {
         return(
         <div>
                 <input id="username" placeholder="Username" type="text"></input>
-                <button onClick={this.UpdateAndLoadGameInfo}>UpdateAndLoadGameInfo</button>
+                <button onClick={UpdateAndLoadGameInfoFromSteamAPI}>UpdateAndLoadGameInfoFromSteamAPI</button>
                 <select onChange={this.HandleEvent} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
                 <h1 style={selectStyles}>{store.getState().selectedGameTitle}</h1>
                 <h2 style={selectStyles}>{store.getState().selectedGameTime} mins</h2>

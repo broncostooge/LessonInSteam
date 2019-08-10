@@ -1,4 +1,5 @@
 import passwordHash from 'password-hash';
+import { store } from '../Store/store.js';
 
 export async function CreateUser(){
     const username = document.getElementById("username").value;
@@ -144,4 +145,50 @@ export async function GetUserSteamGamesFromSteamAPI(state){
   .then(response => response.json())
   .then(json => console.log(json));
 
+}
+
+export function UpdateGameTitleAndTime(){
+        
+  const selectObject = document.getElementById("gameList");
+  let selectedGameTitle = selectObject.options[selectObject.selectedIndex].getAttribute('gamename');
+  let selectedGameTime = selectObject.options[selectObject.selectedIndex].getAttribute('time');
+  
+  store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: selectedGameTitle })
+  store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: selectedGameTime })
+
+}
+
+export async function UpdateAndLoadGameInfoFromSteamAPI(){
+
+  const userName = document.getElementById("username").value;
+
+  const data = {
+    username: userName
+  }
+
+  let headers = new Headers();
+
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Access-Control-Allow-Origin', '*');
+
+  await fetch(' http://localhost:57766/UpdateAndLoadUserSteamInfo', {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: headers
+  })
+  .then(response => response.json())
+  .then(json => {
+      store.dispatch({ type: 'SET_GAME_LIST', gameList: json })
+      store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" })
+      store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 })
+  }
+  );
+
+  if(document.getElementById("gameList").length > 0){
+      document.getElementById("gameList").selectedIndex = "0";
+  }
+  document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
+
+  UpdateGameTitleAndTime();
 }
