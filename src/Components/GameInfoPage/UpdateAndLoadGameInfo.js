@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../Content/CSS/index.css';
 import { store } from '../../Store/store.js';
-import { UpdateAndLoadGameInfoFromSteamAPI, UpdateGameTitleAndTime } from '../../Utilities/APIUtils.js'
+import { UpdateAndLoadGameInfoFromSteamAPI, UpdateGameTitleAndTime, SetBackgroundImage } from '../../Utilities/APIUtils.js'
 
 class UpdateAndLoadGameInfo extends Component {
     constructor (props) {
@@ -10,41 +10,16 @@ class UpdateAndLoadGameInfo extends Component {
 
         document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
         document.getElementById("root").style.backgroundSize = 'cover';
-
-        this.HandleEvent = this.HandleEvent.bind(this);
-    }
-
-    
-    HandleEvent(){
-        const backgroundImageSourceURLbegin = "https://steamcdn-a.akamaihd.net/steam/apps/";
-        const backgroundImageSourceURLend = "/page_bg_generated_v6b.jpg"
-        let elementById_root = document.getElementById("root");
-        
-        const selectObject = document.getElementById("gameList");
-        let selectedOptionValue = null;
-
-        if(selectObject.selectedIndex > -1)
-        {
-            selectedOptionValue = selectObject.options[selectObject.selectedIndex].value;  
-        }
-
-        if(selectedOptionValue !== "All"){
-            elementById_root.style.backgroundImage = 'url(' + backgroundImageSourceURLbegin + selectedOptionValue + backgroundImageSourceURLend + ')';
-        }
-        else{
-            elementById_root.style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
-        }
-        elementById_root.style.backgroundSize = 'cover';
-
-        UpdateGameTitleAndTime();
     }
 
     render(){
         const selectedGameTime = store.getState().selectedGameTime;
         const selectedGameTitle = store.getState().selectedGameTitle;
         const gameList = store.getState().gameList;
+        const topFiveGames = store.getState().topFiveGames;
 
         let gameListToDisplay = null;
+        let topFiveGamesToDisplay = null;
         let allOption = null;
         let selectStyles = {
             display: "none"
@@ -61,6 +36,12 @@ class UpdateAndLoadGameInfo extends Component {
 
             allOption = <option key="All" value="All" gamename="All" time={totalPlaytimeForever}>All - {totalPlaytimeForever} mins</option>;
 
+            topFiveGamesToDisplay = topFiveGames.map((element, index) => {
+                let imgIconURL = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + element.appid + '/' + element.img_icon_url + '.jpg'
+                let imgLogoURL = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + element.appid + '/' + element.img_logo_url + '.jpg'
+                return <p key={index}>{index + 1}) <img alt={element.gamename} src={imgIconURL}/> {element.name} - {element.playtime_forever}<img alt={element.gamename} src={imgLogoURL}/></p>
+            })
+
             selectStyles = {
                 display: ""
             }
@@ -71,9 +52,11 @@ class UpdateAndLoadGameInfo extends Component {
         <div>
                 <input id="username" placeholder="Username" type="text"></input>
                 <button onClick={UpdateAndLoadGameInfoFromSteamAPI}>UpdateAndLoadGameInfoFromSteamAPI</button>
-                <select onChange={this.HandleEvent} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
-                <h1 style={selectStyles}>{store.getState().selectedGameTitle}</h1>
-                <h2 style={selectStyles}>{store.getState().selectedGameTime} mins</h2>
+                <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
+                <h1 style={selectStyles}>{selectedGameTitle}</h1>
+                <h2 style={selectStyles}>{selectedGameTime} mins</h2>
+                <h3 style={selectStyles}>Top 5 Games</h3>
+                <h4>{topFiveGamesToDisplay}</h4>
             </div>
         )
     }
@@ -83,7 +66,8 @@ function mapStateToProps(state) {
     return { 
         gameList: state.gameList,
         selectedGameTitle: state.selectedGameTitle,
-        selectedGameTime: state.selectedGameTime
+        selectedGameTime: state.selectedGameTime,
+        topFiveGames: state.topFiveGames
     };
 }
 

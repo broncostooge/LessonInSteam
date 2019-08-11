@@ -147,9 +147,34 @@ export async function GetUserSteamGamesFromSteamAPI(state){
 
 }
 
+export function SetBackgroundImage(){
+  const backgroundImageSourceURLbegin = "https://steamcdn-a.akamaihd.net/steam/apps/";
+  const backgroundImageSourceURLend = "/page_bg_generated_v6b.jpg"
+  const selectObject = document.getElementById("gameList");
+
+  let elementById_root = document.getElementById("root");
+  let selectedOptionValue = null;
+
+  if(selectObject.selectedIndex > -1)
+  {
+      selectedOptionValue = selectObject.options[selectObject.selectedIndex].value;  
+  }
+
+  if(selectedOptionValue !== "All"){
+      elementById_root.style.backgroundImage = 'url(' + backgroundImageSourceURLbegin + selectedOptionValue + backgroundImageSourceURLend + ')';
+  }
+  else{
+      elementById_root.style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
+  }
+  elementById_root.style.backgroundSize = 'cover';
+
+  UpdateGameTitleAndTime();
+}
+
 export function UpdateGameTitleAndTime(){
         
   const selectObject = document.getElementById("gameList");
+
   let selectedGameTitle = selectObject.options[selectObject.selectedIndex].getAttribute('gamename');
   let selectedGameTime = selectObject.options[selectObject.selectedIndex].getAttribute('time');
   
@@ -179,11 +204,21 @@ export async function UpdateAndLoadGameInfoFromSteamAPI(){
   })
   .then(response => response.json())
   .then(json => {
-      store.dispatch({ type: 'SET_GAME_LIST', gameList: json })
-      store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" })
-      store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 })
+    
+    const gamesSortedByGameName = json.sort((a, b) => SortByGameName(a, b));
+    const gamesSortedByTime = json.sort((a, b) => b.playtime_forever - a.playtime_forever);
+    let topFiveGames = [];
+    
+    for (var i = 0; i < 5; i++){
+      topFiveGames[i] = gamesSortedByTime[i];
+    }
+
+    store.dispatch({ type: 'SET_GAME_LIST', gameList: gamesSortedByGameName });
+    store.dispatch({ type: 'SET_TOP_FIVE_GAMES', topFiveGames: topFiveGames});
+    store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" });
+    store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 });
   }
-  );
+);
 
   if(document.getElementById("gameList").length > 0){
       document.getElementById("gameList").selectedIndex = "0";
@@ -191,4 +226,16 @@ export async function UpdateAndLoadGameInfoFromSteamAPI(){
   document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
 
   UpdateGameTitleAndTime();
+}
+
+function SortByGameName(a, b){
+  if(a.name < b.name){
+    return -1;
+  }
+  else if(a.name > b.name){
+    return 1;
+  }
+  else{
+    return 0;
+  }
 }
