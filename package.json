@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://broncostooge.github.io/LessonInSteam",
   "dependencies": {
+    "@material-ui/core": "^4.3.2",
     "gh-pages": "^2.0.1",
     "password-hash": "^1.2.2",
     "react": "^16.8.6",

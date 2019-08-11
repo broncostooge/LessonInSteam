@@ -1,0 +1,15 @@
+.InnerGrid{
+    height:33.3vh;
+}
+
+.InnerGridInput{
+    height:5vh;
+}
+
+.InnerGridMain{
+    height:61.6vh;
+}
+
+.InnerGridMainParent{
+    margin-top:-28.3vh!important;
+}

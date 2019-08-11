@@ -128,15 +128,7 @@ export async function GetUserSteamGamesFromSteamAPI(state){
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   headers.append('Access-Control-Allow-Origin', '*');
-/*
-  await fetch('https://lessoninsteamservices.azurewebsites.net/GetUserSteamGameInfoFromSteamAPI', {
-    method: "PUT",
-    body: JSON.stringify(data),
-    headers: headers
-  })
-  .then(response => response.json())
-  .then(json => console.log(json));
-  */
+
   await fetch(' http://localhost:57766/GetUserSteamGameInfoFromSteamAPI', {
     method: "PUT",
     body: JSON.stringify(data),
@@ -145,6 +137,30 @@ export async function GetUserSteamGamesFromSteamAPI(state){
   .then(response => response.json())
   .then(json => console.log(json));
 
+}
+
+export async function VerifySteamUserName(){
+  console.log('hello');
+
+  const username = document.getElementById("username").value;
+
+  const data = {
+    userName: username
+  }
+
+  let headers = new Headers();
+
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Access-Control-Allow-Origin', '*');
+  
+  await fetch(' http://localhost:57766/VerifySteamUserName', {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: headers
+  })
+  .then(response => response.json())
+  .then(json => console.log(json.response));
 }
 
 export function SetBackgroundImage(){
@@ -218,7 +234,7 @@ export async function UpdateAndLoadGameInfoFromSteamAPI(){
     store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" });
     store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 });
   }
-);
+  );
 
   if(document.getElementById("gameList").length > 0){
       document.getElementById("gameList").selectedIndex = "0";

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../Content/CSS/index.css';
 import { store } from '../../Store/store.js';
-import { UpdateAndLoadGameInfoFromSteamAPI, UpdateGameTitleAndTime, SetBackgroundImage } from '../../Utilities/APIUtils.js'
+import { UpdateAndLoadGameInfoFromSteamAPI, UpdateGameTitleAndTime, SetBackgroundImage, VerifySteamUserName } from '../../Utilities/APIUtils.js'
 
 class UpdateAndLoadGameInfo extends Component {
     constructor (props) {
@@ -18,6 +18,16 @@ class UpdateAndLoadGameInfo extends Component {
         const gameList = store.getState().gameList;
         const topFiveGames = store.getState().topFiveGames;
 
+        let GTInYearTime = 0;
+        let GTInDayTime = 0;
+        let GTInMileTime = 0;
+        let GTInApolloTripTime = 0;
+        let GTInCoastToCoastTripTime = 0;
+        let GTInOGStarWarsFilmTime = 0;
+        let GTInFootballSeasonTime = 0;
+        let GTInFootballGameTime = 0;
+        
+
         let gameListToDisplay = null;
         let topFiveGamesToDisplay = null;
         let allOption = null;
@@ -29,6 +39,15 @@ class UpdateAndLoadGameInfo extends Component {
 
             let totalPlaytimeForever = 0;
 
+            GTInYearTime = (((selectedGameTime/60)/24)/365).toFixed(2);
+            GTInDayTime = ((selectedGameTime/60)/24).toFixed(2);
+            GTInMileTime = (selectedGameTime/10).toFixed(2);
+            GTInApolloTripTime = (selectedGameTime/6165).toFixed(2);
+            GTInCoastToCoastTripTime = (selectedGameTime/13440).toFixed(2);
+            GTInOGStarWarsFilmTime = (selectedGameTime/1360).toFixed(2);
+            GTInFootballSeasonTime = (selectedGameTime/3072).toFixed(2);
+            GTInFootballGameTime = (selectedGameTime/192).toFixed(2);
+            
             gameListToDisplay = gameList.map((element, index) => {
                 totalPlaytimeForever += element.playtime_forever;
                 return <option key={index} value={element.appid} gamename={element.name} time={element.playtime_forever}>{element.name} - {element.playtime_forever}</option>;
@@ -49,14 +68,21 @@ class UpdateAndLoadGameInfo extends Component {
         }
         
         return(
-        <div>
-                <input id="username" placeholder="Username" type="text"></input>
+            <div>
+                <input onChange={VerifySteamUserName}id="username" placeholder="Username" type="text"></input>
                 <button onClick={UpdateAndLoadGameInfoFromSteamAPI}>UpdateAndLoadGameInfoFromSteamAPI</button>
                 <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
                 <h1 style={selectStyles}>{selectedGameTitle}</h1>
                 <h2 style={selectStyles}>{selectedGameTime} mins</h2>
                 <h3 style={selectStyles}>Top 5 Games</h3>
                 <h4>{topFiveGamesToDisplay}</h4>
+                <h3 style={selectStyles}>Game Time Played In Years</h3>
+                <h4 style={selectStyles}>{GTInYearTime} years or {GTInDayTime} days</h4>
+                <h4 style={selectStyles}>You could have run {GTInMileTime} miles! (Average mile time 10 mins/mile)</h4>
+                <h4 style={selectStyles}>You could have taken {GTInApolloTripTime} trips to the moon in Apollo 11! (It took Apollo 11 4 days, 6 hours, and 45 minutes to reach the moon)</h4>
+                <h4 style={selectStyles}>You could have taken the coast to coast drive across America {GTInCoastToCoastTripTime} times (Average time 224 hours)</h4>
+                <h4 style={selectStyles}>You could have seen the Original Star Wars Trilogy {GTInOGStarWarsFilmTime} times (Orignal Star Wars Trilogy Running Time: 22 hours and 40 minutes)</h4>
+                <h4 style={selectStyles}>You have played through {GTInFootballSeasonTime} season of football or {GTInFootballGameTime} games of football</h4>
             </div>
         )
     }
