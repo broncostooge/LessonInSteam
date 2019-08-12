@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../Content/CSS/index.css';
 import { store } from '../../Store/store.js';
-import { UpdateAndLoadGameInfoFromSteamAPI, UpdateGameTitleAndTime, SetBackgroundImage, VerifySteamUserName } from '../../Utilities/APIUtils.js'
+import { UpdateAndLoadGameInfoFromSteamAPI, SetBackgroundImage, VerifySteamUserName } from '../../Utilities/APIUtils.js'
+import Grid from '@material-ui/core/Grid';
+import '../../Content/CSS/MainPage.css';
 
 class UpdateAndLoadGameInfo extends Component {
     constructor (props) {
@@ -15,6 +17,9 @@ class UpdateAndLoadGameInfo extends Component {
     render(){
         const selectedGameTime = store.getState().selectedGameTime;
         const selectedGameTitle = store.getState().selectedGameTitle;
+        const selectedGameAppID = store.getState().selectedGameAppID;
+        const selectedGameLogoURL = store.getState().selectedGameLogoURL;
+        const logoImageSrc = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + selectedGameAppID + '/' + selectedGameLogoURL + '.jpg';
         const gameList = store.getState().gameList;
         const topFiveGames = store.getState().topFiveGames;
 
@@ -57,8 +62,9 @@ class UpdateAndLoadGameInfo extends Component {
 
             topFiveGamesToDisplay = topFiveGames.map((element, index) => {
                 let imgIconURL = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + element.appid + '/' + element.img_icon_url + '.jpg'
-                let imgLogoURL = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + element.appid + '/' + element.img_logo_url + '.jpg'
-                return <p key={index}>{index + 1}) <img alt={element.gamename} src={imgIconURL}/> {element.name} - {element.playtime_forever}<img alt={element.gamename} src={imgLogoURL}/></p>
+                return <p key={index}>{index + 1}) 
+                    <img alt={element.gamename} src={imgIconURL}/> {element.name} - {element.playtime_forever}
+                    </p>
             })
 
             selectStyles = {
@@ -69,20 +75,46 @@ class UpdateAndLoadGameInfo extends Component {
         
         return(
             <div>
-                <input onChange={VerifySteamUserName}id="username" placeholder="Username" type="text"></input>
-                <button onClick={UpdateAndLoadGameInfoFromSteamAPI}>UpdateAndLoadGameInfoFromSteamAPI</button>
-                <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
-                <h1 style={selectStyles}>{selectedGameTitle}</h1>
-                <h2 style={selectStyles}>{selectedGameTime} mins</h2>
-                <h3 style={selectStyles}>Top 5 Games</h3>
-                <h4>{topFiveGamesToDisplay}</h4>
-                <h3 style={selectStyles}>Game Time Played In Years</h3>
-                <h4 style={selectStyles}>{GTInYearTime} years or {GTInDayTime} days</h4>
-                <h4 style={selectStyles}>You could have run {GTInMileTime} miles! (Average mile time 10 mins/mile)</h4>
-                <h4 style={selectStyles}>You could have taken {GTInApolloTripTime} trips to the moon in Apollo 11! (It took Apollo 11 4 days, 6 hours, and 45 minutes to reach the moon)</h4>
-                <h4 style={selectStyles}>You could have taken the coast to coast drive across America {GTInCoastToCoastTripTime} times (Average time 224 hours)</h4>
-                <h4 style={selectStyles}>You could have seen the Original Star Wars Trilogy {GTInOGStarWarsFilmTime} times (Orignal Star Wars Trilogy Running Time: 22 hours and 40 minutes)</h4>
-                <h4 style={selectStyles}>You have played through {GTInFootballSeasonTime} season of football or {GTInFootballGameTime} games of football</h4>
+                <Grid container spacing={0}>
+                    <Grid className='InnerGrid' item xs={4}>
+                        <h4 style={selectStyles}>You could have seen the Original Star Wars Trilogy {GTInOGStarWarsFilmTime} times (Orignal Star Wars Trilogy Running Time: 22 hours and 40 minutes)</h4>
+                    </Grid>
+                    <Grid className='InnerGridInput' item xs={2}>
+                        <input onChange={VerifySteamUserName}id="username" placeholder="Username" type="text"></input>
+                        <button onClick={UpdateAndLoadGameInfoFromSteamAPI}>UpdateAndLoadGameInfoFromSteamAPI</button>
+                    </Grid>
+                    <Grid className='InnerGridInput' item xs={2}>
+                        <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
+                    </Grid>
+                    <Grid className='InnerGrid' item xs={4}>
+                        <h3 style={selectStyles}>Game Time Played In Years</h3>
+                        <h4 style={selectStyles}>{GTInYearTime} years or {GTInDayTime} days</h4>
+                    </Grid>
+                    
+                    <Grid className='InnerGrid' item xs={4}>
+                        <h4 style={selectStyles}>You could have taken the coast to coast drive across America {GTInCoastToCoastTripTime} times (Average time 224 hours)</h4>
+                    </Grid>
+                    <Grid className='InnerGridMainParent' item xs={4}>
+                        <h1 style={selectStyles}>{selectedGameTitle}</h1>
+                        <h2 style={selectStyles}>{selectedGameTime} mins</h2>
+                        
+                        <img alt={selectedGameAppID} src={logoImageSrc}/>
+                    </Grid>
+                    <Grid className='InnerGrid' item xs={4}>
+                        <h4 style={selectStyles}>You could have run {GTInMileTime} miles! (Average mile time 10 mins/mile)</h4>
+                    </Grid>
+
+                    <Grid className='InnerGrid' item xs={4}>
+                        <h4 style={selectStyles}>You have played through {GTInFootballSeasonTime} season of football or {GTInFootballGameTime} games of football</h4>
+                    </Grid>
+                    <Grid className='InnerGrid' item xs={4}>
+                        <h4 style={selectStyles}>You could have taken {GTInApolloTripTime} trips to the moon in Apollo 11! (It took Apollo 11 4 days, 6 hours, and 45 minutes to reach the moon)</h4>
+                    </Grid>
+                    <Grid className='InnerGrid' item xs={4}>
+                        <h3 style={selectStyles}>Top 5 Games</h3>
+                        <h4>{topFiveGamesToDisplay}</h4>
+                    </Grid>
+                </Grid>
             </div>
         )
     }

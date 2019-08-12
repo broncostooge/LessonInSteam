@@ -197,6 +197,17 @@ export function UpdateGameTitleAndTime(){
   store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: selectedGameTitle })
   store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: selectedGameTime })
 
+  const gameList = store.getState().gameList;
+  
+  gameList.filter((game, index) => {
+    if(game.name === selectedGameTitle){
+      store.dispatch({ type: 'SET_SELECTED_GAME_APP_ID', selectedGameAppID: gameList[index].appid});
+      store.dispatch({ type: 'SET_SELECTED_GAME_LOGO_URL', selectedGameLogoURL: gameList[index].img_logo_url});
+    }
+  })
+
+  console.log(store.getState());
+
 }
 
 export async function UpdateAndLoadGameInfoFromSteamAPI(){

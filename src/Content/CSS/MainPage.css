@@ -1,15 +1,22 @@
 .InnerGrid{
     height:33.3vh;
+    border: 1px solid white;
 }
 
 .InnerGridInput{
     height:5vh;
+    border: 1px solid white;
 }
 
 .InnerGridMain{
+    border: 1px solid white;
     height:61.6vh;
 }
 
 .InnerGridMainParent{
     margin-top:-28.3vh!important;
+}
+
+p{
+    margin:0px;
 }
