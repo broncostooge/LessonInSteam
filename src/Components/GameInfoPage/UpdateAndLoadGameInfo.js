@@ -131,7 +131,7 @@ class UpdateAndLoadGameInfo extends Component {
                         <Card styles = {selectStyles} title = {timeInDayAndYearTitle} text = {timeInDayAndYearText} />
                     </Grid>
                     
-                    <Grid className='InnerGrid' item xs={4}>test
+                    <Grid className='InnerGrid' item xs={4}>
                         <Card styles = {selectStyles} title = {coastToCoastTitle} text = {coastToCoastText} />
                     </Grid>
                     <Grid className='InnerGridMainParent' item xs={4}>

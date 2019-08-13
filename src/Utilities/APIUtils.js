@@ -140,7 +140,6 @@ export async function GetUserSteamGamesFromSteamAPI(state){
 }
 
 export async function VerifySteamUserName(){
-  console.log('hello');
 
   const username = document.getElementById("username").value;
 
@@ -154,7 +153,7 @@ export async function VerifySteamUserName(){
   headers.append('Accept', 'application/json');
   headers.append('Access-Control-Allow-Origin', '*');
   
-  await fetch(' http://localhost:57766/VerifySteamUserName', {
+  await fetch(' https://lessoninsteamservices.azurewebsites.net/VerifySteamUserName', {
     method: "PUT",
     body: JSON.stringify(data),
     headers: headers
@@ -225,7 +224,7 @@ export async function UpdateAndLoadGameInfoFromSteamAPI(){
   headers.append('Accept', 'application/json');
   headers.append('Access-Control-Allow-Origin', '*');
 
-  await fetch(' http://localhost:57766/UpdateAndLoadUserSteamInfo', {
+  await fetch('https://lessoninsteamservices.azurewebsites.net/UpdateAndLoadUserSteamInfo', {
     method: "PUT",
     body: JSON.stringify(data),
     headers: headers
