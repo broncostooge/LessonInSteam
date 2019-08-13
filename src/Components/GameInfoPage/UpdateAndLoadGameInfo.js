@@ -1,10 +1,16 @@
+//MODULES
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import '../../Content/CSS/index.css';
+//FUNCTIONS
 import { store } from '../../Store/store.js';
 import { UpdateAndLoadGameInfoFromSteamAPI, SetBackgroundImage, VerifySteamUserName } from '../../Utilities/APIUtils.js'
+//COMPONENTS
 import Grid from '@material-ui/core/Grid';
+import Card from './Card.js'
+//CONTENT
+import '../../Content/CSS/index.css';
 import '../../Content/CSS/MainPage.css';
+import steamLogo from '../../Content/Images/Steam-Banner.jpg'
 
 class UpdateAndLoadGameInfo extends Component {
     constructor (props) {
@@ -19,9 +25,17 @@ class UpdateAndLoadGameInfo extends Component {
         const selectedGameTitle = store.getState().selectedGameTitle;
         const selectedGameAppID = store.getState().selectedGameAppID;
         const selectedGameLogoURL = store.getState().selectedGameLogoURL;
-        const logoImageSrc = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + selectedGameAppID + '/' + selectedGameLogoURL + '.jpg';
+        let logoImageSrc = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + selectedGameAppID + '/' + selectedGameLogoURL + '.jpg';
         const gameList = store.getState().gameList;
         const topFiveGames = store.getState().topFiveGames;
+
+        const starWarsTitle = "Star Wars";
+        const coastToCoastTitle = "Coast to Coast";
+        const footballTitle = "Football";
+        const apolloTitle = "Apollo 11";
+        const milesTitle = "Miles";
+        const timeInDayAndYearTitle = "Game Time Played In Years";
+        const topFiveGamesTitle = "Top 5 Games";
 
         let GTInYearTime = 0;
         let GTInDayTime = 0;
@@ -36,10 +50,22 @@ class UpdateAndLoadGameInfo extends Component {
         let gameListToDisplay = null;
         let topFiveGamesToDisplay = null;
         let allOption = null;
+        
+        let starWarsText = null;
+        let coastToCoastText = null;
+        let footballText = null;
+        let apolloText = null;
+        let milesText = null;
+        let timeInDayAndYearText = null;
+        let topFiveGamesText = null;
+        let gameInfoText = null;
+
+        let gameInfoTitle = null;
+
         let selectStyles = {
             display: "none"
         }
-
+        
         if(gameList.length > 0){
 
             let totalPlaytimeForever = 0;
@@ -71,13 +97,28 @@ class UpdateAndLoadGameInfo extends Component {
                 display: ""
             }
             
+            starWarsText = "You could have seen the Original Star Wars Trilogy " + GTInOGStarWarsFilmTime + " times (Orignal Star Wars Trilogy Running Time: 22 hours and 40 minutes)";
+            coastToCoastText = "You could have taken the coast to coast drive across America" + GTInCoastToCoastTripTime + " times (Average time 224 hours)";
+            footballText = "You have played through " + GTInFootballSeasonTime + " season of football or " + GTInFootballGameTime + " games of football";
+            apolloText = "You could have taken " + GTInApolloTripTime + " trips to the moon in Apollo 11! (It took Apollo 11 4 days, 6 hours, and 45 minutes to reach the moon)";
+            milesText = "You could have run " + GTInMileTime + " miles! (Average mile time 10 mins/mile)";
+            timeInDayAndYearText = GTInYearTime +" years or " + GTInDayTime + " days";
+            gameInfoText = selectedGameTime + " mins";
+            topFiveGamesText = topFiveGamesToDisplay;
+            
+            gameInfoTitle = selectedGameTitle;
+
+            if(selectedGameTitle === "All")
+            {
+                logoImageSrc = steamLogo;
+            }
         }
         
         return(
             <div>
                 <Grid container spacing={0}>
                     <Grid className='InnerGrid' item xs={4}>
-                        <h4 style={selectStyles}>You could have seen the Original Star Wars Trilogy {GTInOGStarWarsFilmTime} times (Orignal Star Wars Trilogy Running Time: 22 hours and 40 minutes)</h4>
+                        <Card styles = {selectStyles} title = {starWarsTitle} text = {starWarsText} />
                     </Grid>
                     <Grid className='InnerGridInput' item xs={2}>
                         <input onChange={VerifySteamUserName}id="username" placeholder="Username" type="text"></input>
@@ -87,32 +128,29 @@ class UpdateAndLoadGameInfo extends Component {
                         <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
                     </Grid>
                     <Grid className='InnerGrid' item xs={4}>
-                        <h3 style={selectStyles}>Game Time Played In Years</h3>
-                        <h4 style={selectStyles}>{GTInYearTime} years or {GTInDayTime} days</h4>
+                        <Card styles = {selectStyles} title = {timeInDayAndYearTitle} text = {timeInDayAndYearText} />
                     </Grid>
                     
-                    <Grid className='InnerGrid' item xs={4}>
-                        <h4 style={selectStyles}>You could have taken the coast to coast drive across America {GTInCoastToCoastTripTime} times (Average time 224 hours)</h4>
+                    <Grid className='InnerGrid' item xs={4}>test
+                        <Card styles = {selectStyles} title = {coastToCoastTitle} text = {coastToCoastText} />
                     </Grid>
                     <Grid className='InnerGridMainParent' item xs={4}>
-                        <h1 style={selectStyles}>{selectedGameTitle}</h1>
-                        <h2 style={selectStyles}>{selectedGameTime} mins</h2>
-                        
-                        <img alt={selectedGameAppID} src={logoImageSrc}/>
+
+                        <Card styles = {selectStyles} title = {gameInfoTitle} text = {gameInfoText} />
+                        <img className = 'MainInfoLogo' style={selectStyles} alt={selectedGameAppID} src={logoImageSrc}/>
                     </Grid>
                     <Grid className='InnerGrid' item xs={4}>
-                        <h4 style={selectStyles}>You could have run {GTInMileTime} miles! (Average mile time 10 mins/mile)</h4>
+                        <Card styles = {selectStyles} title = {milesTitle} text = {milesText} />
                     </Grid>
 
                     <Grid className='InnerGrid' item xs={4}>
-                        <h4 style={selectStyles}>You have played through {GTInFootballSeasonTime} season of football or {GTInFootballGameTime} games of football</h4>
+                        <Card styles = {selectStyles} title = {footballTitle} text = {footballText} />
                     </Grid>
                     <Grid className='InnerGrid' item xs={4}>
-                        <h4 style={selectStyles}>You could have taken {GTInApolloTripTime} trips to the moon in Apollo 11! (It took Apollo 11 4 days, 6 hours, and 45 minutes to reach the moon)</h4>
+                        <Card styles = {selectStyles} title = {apolloTitle} text = {apolloText} />
                     </Grid>
                     <Grid className='InnerGrid' item xs={4}>
-                        <h3 style={selectStyles}>Top 5 Games</h3>
-                        <h4>{topFiveGamesToDisplay}</h4>
+                        <Card styles = {selectStyles} title = {topFiveGamesTitle} text = {topFiveGamesText} />
                     </Grid>
                 </Grid>
             </div>
@@ -125,7 +163,9 @@ function mapStateToProps(state) {
         gameList: state.gameList,
         selectedGameTitle: state.selectedGameTitle,
         selectedGameTime: state.selectedGameTime,
-        topFiveGames: state.topFiveGames
+        topFiveGames: state.topFiveGames,
+        selectedGameAppID: state.selectedGameAppID,
+        selectedGameLogoURL: state.selectedGameLogoURL
     };
 }
 

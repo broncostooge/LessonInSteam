@@ -204,6 +204,7 @@ export function UpdateGameTitleAndTime(){
       store.dispatch({ type: 'SET_SELECTED_GAME_APP_ID', selectedGameAppID: gameList[index].appid});
       store.dispatch({ type: 'SET_SELECTED_GAME_LOGO_URL', selectedGameLogoURL: gameList[index].img_logo_url});
     }
+    return true;
   })
 
   console.log(store.getState());
