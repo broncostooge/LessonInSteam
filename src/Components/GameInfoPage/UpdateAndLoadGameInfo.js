@@ -1,9 +1,9 @@
 //MODULES
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 //FUNCTIONS
 import { store } from '../../Store/store.js';
-import { UpdateAndLoadGameInfoFromSteamAPI, SetBackgroundImage, VerifySteamUserName } from '../../Utilities/APIUtils.js'
+import { SetBackgroundImage } from '../../Utilities/APIUtils.js'
 //COMPONENTS
 import Grid from '@material-ui/core/Grid';
 import Card from './Card.js'
@@ -28,7 +28,6 @@ class UpdateAndLoadGameInfo extends Component {
         let logoImageSrc = 'http://media.steampowered.com/steamcommunity/public/images/apps/' + selectedGameAppID + '/' + selectedGameLogoURL + '.jpg';
         const gameList = store.getState().gameList;
         const topFiveGames = store.getState().topFiveGames;
-
         const starWarsTitle = "Star Wars";
         const coastToCoastTitle = "Coast to Coast";
         const footballTitle = "Football";
@@ -45,12 +44,9 @@ class UpdateAndLoadGameInfo extends Component {
         let GTInOGStarWarsFilmTime = 0;
         let GTInFootballSeasonTime = 0;
         let GTInFootballGameTime = 0;
-        
-
         let gameListToDisplay = null;
         let topFiveGamesToDisplay = null;
         let allOption = null;
-        
         let starWarsText = null;
         let coastToCoastText = null;
         let footballText = null;
@@ -59,9 +55,7 @@ class UpdateAndLoadGameInfo extends Component {
         let timeInDayAndYearText = null;
         let topFiveGamesText = null;
         let gameInfoText = null;
-
         let gameInfoTitle = null;
-
         let selectStyles = {
             display: "none"
         }
@@ -115,45 +109,43 @@ class UpdateAndLoadGameInfo extends Component {
         }
         
         return(
-            <div>
-                <Grid container spacing={0}>
-                    <Grid className='InnerGrid' item xs={4}>
-                        <Card styles = {selectStyles} title = {starWarsTitle} text = {starWarsText} />
-                    </Grid>
-                    <Grid className='InnerGridInput' item xs={2}>
-                        <input onChange={VerifySteamUserName}id="username" placeholder="Username" type="text"></input>
-                        <button onClick={UpdateAndLoadGameInfoFromSteamAPI}>UpdateAndLoadGameInfoFromSteamAPI</button>
-                    </Grid>
-                    <Grid className='InnerGridInput' item xs={2}>
-                        <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
-                    </Grid>
-                    <Grid className='InnerGrid' item xs={4}>
-                        <Card styles = {selectStyles} title = {timeInDayAndYearTitle} text = {timeInDayAndYearText} />
-                    </Grid>
-                    
-                    <Grid className='InnerGrid' item xs={4}>
-                        <Card styles = {selectStyles} title = {coastToCoastTitle} text = {coastToCoastText} />
-                    </Grid>
-                    <Grid className='InnerGridMainParent' item xs={4}>
+            <Provider store={store} >
+                <div>
+                    <Grid container spacing={0}>
+                        <Grid className='InnerGrid' item xs={4}>
+                            <Card styles = {selectStyles} title = {starWarsTitle} text = {starWarsText} />
+                        </Grid>
+                        <Grid className='InnerGridInput' item xs={4}>
+                            <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
+                        </Grid>
+                        <Grid className='InnerGrid' item xs={4}>
+                            <Card styles = {selectStyles} title = {timeInDayAndYearTitle} text = {timeInDayAndYearText} />
+                        </Grid>
+                        
+                        <Grid className='InnerGrid' item xs={4}>
+                            <Card styles = {selectStyles} title = {coastToCoastTitle} text = {coastToCoastText} />
+                        </Grid>
+                        <Grid className='InnerGridMainParent' item xs={4}>
 
-                        <Card styles = {selectStyles} title = {gameInfoTitle} text = {gameInfoText} />
-                        <img className = 'MainInfoLogo' style={selectStyles} alt={selectedGameAppID} src={logoImageSrc}/>
-                    </Grid>
-                    <Grid className='InnerGrid' item xs={4}>
-                        <Card styles = {selectStyles} title = {milesTitle} text = {milesText} />
-                    </Grid>
+                            <Card styles = {selectStyles} title = {gameInfoTitle} text = {gameInfoText} />
+                            <img className = 'MainInfoLogo' style={selectStyles} alt={selectedGameAppID} src={logoImageSrc}/>
+                        </Grid>
+                        <Grid className='InnerGrid' item xs={4}>
+                            <Card styles = {selectStyles} title = {milesTitle} text = {milesText} />
+                        </Grid>
 
-                    <Grid className='InnerGrid' item xs={4}>
-                        <Card styles = {selectStyles} title = {footballTitle} text = {footballText} />
+                        <Grid className='InnerGrid' item xs={4}>
+                            <Card styles = {selectStyles} title = {footballTitle} text = {footballText} />
+                        </Grid>
+                        <Grid className='InnerGrid' item xs={4}>
+                            <Card styles = {selectStyles} title = {apolloTitle} text = {apolloText} />
+                        </Grid>
+                        <Grid className='InnerGrid' item xs={4}>
+                            <Card styles = {selectStyles} title = {topFiveGamesTitle} text = {topFiveGamesText} />
+                        </Grid>
                     </Grid>
-                    <Grid className='InnerGrid' item xs={4}>
-                        <Card styles = {selectStyles} title = {apolloTitle} text = {apolloText} />
-                    </Grid>
-                    <Grid className='InnerGrid' item xs={4}>
-                        <Card styles = {selectStyles} title = {topFiveGamesTitle} text = {topFiveGamesText} />
-                    </Grid>
-                </Grid>
-            </div>
+                </div>
+            </Provider>
         )
     }
 }

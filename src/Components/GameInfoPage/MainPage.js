@@ -5,7 +5,7 @@ import '../../Content/CSS/MainPage.css';
 import UpdateAndLoadGameInfo from './UpdateAndLoadGameInfo'
 import ListOfSteamGames from './ListOfSteamGames'
 
-class MainPage extends Component {
+class MaLeinPage extends Component {
     render(){
 
         return(

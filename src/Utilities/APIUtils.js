@@ -1,5 +1,6 @@
 import passwordHash from 'password-hash';
 import { store } from '../Store/store.js';
+import { createBrowserHistory } from 'history'
 
 export async function CreateUser(){
     const username = document.getElementById("username").value;
@@ -142,7 +143,6 @@ export async function GetUserSteamGamesFromSteamAPI(state){
 export async function VerifySteamUserName(){
 
   const username = document.getElementById("username").value;
-
   const data = {
     userName: username
   }
@@ -153,13 +153,24 @@ export async function VerifySteamUserName(){
   headers.append('Accept', 'application/json');
   headers.append('Access-Control-Allow-Origin', '*');
   
-  await fetch(' https://lessoninsteamservices.azurewebsites.net/VerifySteamUserName', {
+  await fetch('http://localhost:57766/VerifySteamUserName', {
     method: "PUT",
     body: JSON.stringify(data),
     headers: headers
   })
   .then(response => response.json())
-  .then(json => console.log(json.response));
+  .then(json => {
+    console.log(json.response.success);
+    if(json.response.success === 1){
+      
+      document.getElementById("username").classList.add("success");
+      document.getElementById("username").classList.remove("fail");
+    }
+    else{
+      document.getElementById("username").classList.add("fail");
+      document.getElementById("username").classList.remove("success");
+    }
+  });
 }
 
 export function SetBackgroundImage(){
@@ -205,15 +216,12 @@ export function UpdateGameTitleAndTime(){
     }
     return true;
   })
-
-  console.log(store.getState());
-
 }
 
-export async function UpdateAndLoadGameInfoFromSteamAPI(){
+export async function UpdateAndLoadGameInfoFromSteamAPI(props){
 
   const userName = document.getElementById("username").value;
-
+  const history = createBrowserHistory();
   const data = {
     username: userName
   }
@@ -224,11 +232,12 @@ export async function UpdateAndLoadGameInfoFromSteamAPI(){
   headers.append('Accept', 'application/json');
   headers.append('Access-Control-Allow-Origin', '*');
 
-  await fetch('https://lessoninsteamservices.azurewebsites.net/UpdateAndLoadUserSteamInfo', {
+  await fetch(' http://localhost:57766/UpdateAndLoadUserSteamInfo', {
     method: "PUT",
     body: JSON.stringify(data),
     headers: headers
   })
+  .then(props.history.push('/LessonInSteam'))
   .then(response => response.json())
   .then(json => {
     

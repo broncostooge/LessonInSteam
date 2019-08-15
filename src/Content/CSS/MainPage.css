@@ -1,20 +1,20 @@
 .InnerGrid{
     height:33.3vh;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
 }
 
 .InnerGridInput{
     height:5vh;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
 }
 
 .InnerGridMain{
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     height:61.6vh;
 }
 
 .InnerGridMainParent{
-    margin-top:-28.3vh!important;
+    margin-top:-27.3vh!important;
 }
 
 p{
@@ -23,4 +23,16 @@ p{
 
 .MainInfoLogo{
     height: 5vh!important;
+}
+
+.MuiInputBase-input{
+    color:white!important;
+}
+
+.success{
+    color: green!important;
+}
+
+.fail{
+    color: red!important;
 }

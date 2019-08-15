@@ -1,13 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux'
 import { store } from '../Store/store.js';
-import UpdateAndLoadGameInfo from './GameInfoPage/UpdateAndLoadGameInfo';
+import Routes from '../Router/Routes'
 
 function App() {
 
   return (
     <Provider store={store} >
-      <UpdateAndLoadGameInfo />
+      <Routes />
     </Provider>
   );
 }
