@@ -4,9 +4,11 @@ import { connect, Provider } from 'react-redux';
 //FUNCTIONS
 import { store } from '../../Store/store.js';
 import { SetBackgroundImage } from '../../Utilities/APIUtils.js'
+import { signOut } from '../../Utilities/AuthenticateUtils.js'
 //COMPONENTS
 import Grid from '@material-ui/core/Grid';
 import Card from './Card.js'
+import Button from '@material-ui/core/Button';
 //CONTENT
 import '../../Content/CSS/index.css';
 import '../../Content/CSS/MainPage.css';
@@ -117,6 +119,7 @@ class UpdateAndLoadGameInfo extends Component {
                         </Grid>
                         <Grid className='InnerGridInput' item xs={4}>
                             <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
+                            <Button id="SignOut" variant="contained" color="primary" onClick={() => signOut(this.props)}>SignOut</Button>
                         </Grid>
                         <Grid className='InnerGrid' item xs={4}>
                             <Card styles = {selectStyles} title = {timeInDayAndYearTitle} text = {timeInDayAndYearText} />

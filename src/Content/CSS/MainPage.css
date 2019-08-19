@@ -1,15 +1,12 @@
 .InnerGrid{
     height:33.3vh;
-    /*border: 1px solid white;*/
 }
 
 .InnerGridInput{
     height:5vh;
-    /*border: 1px solid white;*/
 }
 
 .InnerGridMain{
-    /*border: 1px solid white;*/
     height:61.6vh;
 }
 
@@ -26,13 +23,29 @@ p{
 }
 
 .MuiInputBase-input{
-    color:white!important;
+    color:black!important;
+    text-align:center;
 }
 
 .success{
     color: green!important;
+    border: 2px solid green!important;
 }
 
 .fail{
     color: red!important;
+    border: 2px solid red!important;
+}
+
+#root > div{
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+#Title{
+    color:black;
+    font-size: 100px
 }
