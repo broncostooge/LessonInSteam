@@ -19,7 +19,7 @@ p{
 }
 
 .MainInfoLogo{
-    height: 5vh!important;
+    height: 13vh!important;
 }
 
 .MuiInputBase-input{
@@ -48,4 +48,26 @@ p{
 #Title{
     color:black;
     font-size: 100px
+}
+
+#root > div > div > div:nth-child(9) > div > h4{
+    float:left;
+}
+
+#root > div > div > div.MuiGrid-root.InnerGridMainParent.MuiGrid-item.MuiGrid-grid-xs-4{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#root > div > div > div.MuiGrid-root.InnerGridMainParent.MuiGrid-item.MuiGrid-grid-xs-4 > div > h3{
+    font-size:50px;
+    text-align: center;
+}
+
+#root > div > div > div.MuiGrid-root.InnerGridMainParent.MuiGrid-item.MuiGrid-grid-xs-4 > div > h4{
+    font-size:40px;
+    text-align: center;
 }

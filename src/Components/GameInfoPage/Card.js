@@ -10,6 +10,8 @@ class Card extends Component {
     }
 
     render(){
+        const gif = <iframe src="https://giphy.com/embed/xTiTnJK44NXT46iKYM" width="480" height="345" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
+
         return(
             <div>
                 <h3>
@@ -18,6 +20,7 @@ class Card extends Component {
                 <h4 style={this.props.selectStyles}>
                     {this.props.text}
                 </h4>
+                {this.props.gif}
             </div>
         )
     }

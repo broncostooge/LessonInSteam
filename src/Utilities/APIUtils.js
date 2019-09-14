@@ -41,37 +41,69 @@ export async function VerifySteamUserName(){
   else{
     verifySteamNameButton.style.display = 'none';
   }
+  const rules = RegExp('[0-9]{17}');
+  //Check if txt is steamID or username
+  if(!rules.test(data.userName)){
+    let headers = new Headers();
 
-  let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+    
+    await fetch('http://localhost:57766/VerifySteamUserName', {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: headers
+    })
+    .then(response => response.json())
+    .then(json => {
 
-  headers.append('Content-Type', 'application/json');
-  headers.append('Accept', 'application/json');
-  headers.append('Access-Control-Allow-Origin', '*');
-  
-  await fetch('http://localhost:57766/VerifySteamUserName', {
-    method: "PUT",
-    body: JSON.stringify(data),
-    headers: headers
-  })
-  .then(response => response.json())
-  .then(json => {
+      if(json.response.success === 1){
+        username.classList.add("success");
+        username.classList.remove("fail");
+        verifySteamNameButton.classList.remove("Mui-disabled");
+        verifySteamNameButton.disabled = false;
+        steamNameVerifyInfo.innerHTML = "That name checks out!";
+      }
+      else{
+        username.classList.add("fail");
+        username.classList.remove("success");
+        verifySteamNameButton.classList.add("Mui-disabled");
+        verifySteamNameButton.disabled = true;
+        steamNameVerifyInfo.innerHTML = "That name doesn't look correct!";
+      }
+    });
+  }
+  else{
+    let headers = new Headers();
 
-    if(json.response.success === 1){
-      
-      username.classList.add("success");
-      username.classList.remove("fail");
-      verifySteamNameButton.classList.remove("Mui-disabled");
-      verifySteamNameButton.disabled = false;
-      steamNameVerifyInfo.innerHTML = "That name checks out!";
-    }
-    else{
-      username.classList.add("fail");
-      username.classList.remove("success");
-      verifySteamNameButton.classList.add("Mui-disabled");
-      verifySteamNameButton.disabled = true;
-      steamNameVerifyInfo.innerHTML = "That name doesn't look correct!";
-    }
-  });
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+    
+    await fetch('http://localhost:57766/VerifySteam64ID', {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: headers
+    })
+    .then(response => response.json())
+    .then(json => {
+      if(json){
+        username.classList.add("success");
+        username.classList.remove("fail");
+        verifySteamNameButton.classList.remove("Mui-disabled");
+        verifySteamNameButton.disabled = false;
+        steamNameVerifyInfo.innerHTML = "That name checks out!";
+      }
+      else{
+        username.classList.add("fail");
+        username.classList.remove("success");
+        verifySteamNameButton.classList.add("Mui-disabled");
+        verifySteamNameButton.disabled = true;
+        steamNameVerifyInfo.innerHTML = "That name doesn't look correct!";
+      }
+    });
+  }
 }
 
 export function SetBackgroundImage(){
@@ -126,47 +158,94 @@ export async function UpdateAndLoadGameInfoFromSteamAPI(props){
   const data = {
     username: userName
   }
-
-  let headers = new Headers();
-
-  headers.append('Content-Type', 'application/json');
-  headers.append('Accept', 'application/json');
-  headers.append('Access-Control-Allow-Origin', '*');
-
-  await fetch(' http://localhost:57766/UpdateAndLoadUserSteamInfo', {
-    method: "PUT",
-    body: JSON.stringify(data),
-    headers: headers
-  })
-  .then(response => response.json())
-  .then(json => {
-    if(json.length > 0){
-      props.history.push('/LessonInSteam');
-      const gamesSortedByGameName = json.sort((a, b) => SortByGameName(a, b));
-      const gamesSortedByTime = json.sort((a, b) => b.playtime_forever - a.playtime_forever);
-      let topFiveGames = [];
+  const rules = RegExp('[0-9]{17}');
+  //Check if txt is steamID or username
+  debugger;
+  if(!rules.test(data.username)){
       
-      for (var i = 0; i < 5; i++){
-        topFiveGames[i] = gamesSortedByTime[i];
+    let headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+
+    await fetch(' http://localhost:57766/UpdateAndLoadUserSteamInfo', {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: headers
+    })
+    .then(response => response.json())
+    .then(json => {
+      if(json.length > 0){
+        props.history.push('/LessonInSteam');
+        const gamesSortedByGameName = json.sort((a, b) => SortByGameName(a, b));
+        const gamesSortedByTime = json.sort((a, b) => b.playtime_forever - a.playtime_forever);
+        let topFiveGames = [];
+        
+        for (var i = 0; i < 5; i++){
+          topFiveGames[i] = gamesSortedByTime[i];
+        }
+
+        store.dispatch({ type: 'SET_GAME_LIST', gameList: gamesSortedByGameName });
+        store.dispatch({ type: 'SET_TOP_FIVE_GAMES', topFiveGames: topFiveGames});
+        store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" });
+        store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 });
+      
+
+        if(document.getElementById("gameList").length > 0){
+            document.getElementById("gameList").selectedIndex = "0";
+        }
+        document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
+
+        UpdateGameTitleAndTime();
       }
-
-      store.dispatch({ type: 'SET_GAME_LIST', gameList: gamesSortedByGameName });
-      store.dispatch({ type: 'SET_TOP_FIVE_GAMES', topFiveGames: topFiveGames});
-      store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" });
-      store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 });
-    
-
-      if(document.getElementById("gameList").length > 0){
-          document.getElementById("gameList").selectedIndex = "0";
+      else{
+        steamNameVerifyInfo.innerHTML = "Uh Oh. Make sure you have your steam profile set to Public so I can can show you your games!"
       }
-      document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
+    });
+  }
+  else{
+    let headers = new Headers();
 
-      UpdateGameTitleAndTime();
-    }
-    else{
-      steamNameVerifyInfo.innerHTML = "Uh Oh. Make sure you have your steam profile set to Public so I can can show you your games!"
-    }
-  });
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+    headers.append('Access-Control-Allow-Origin', '*');
+
+    await fetch(' http://localhost:57766/UpdateAndLoadUserSteamInfoFrom64ID', {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: headers
+    })
+    .then(response => response.json())
+    .then(json => {
+      if(json.length > 0){
+        props.history.push('/LessonInSteam');
+        const gamesSortedByGameName = json.sort((a, b) => SortByGameName(a, b));
+        const gamesSortedByTime = json.sort((a, b) => b.playtime_forever - a.playtime_forever);
+        let topFiveGames = [];
+        
+        for (var i = 0; i < 5; i++){
+          topFiveGames[i] = gamesSortedByTime[i];
+        }
+
+        store.dispatch({ type: 'SET_GAME_LIST', gameList: gamesSortedByGameName });
+        store.dispatch({ type: 'SET_TOP_FIVE_GAMES', topFiveGames: topFiveGames});
+        store.dispatch({ type: 'SET_SELECTED_GAME_TITLE', gameTitle: "All" });
+        store.dispatch({ type: 'SET_SELECTED_GAME_TIME', gameTime: 0 });
+      
+
+        if(document.getElementById("gameList").length > 0){
+            document.getElementById("gameList").selectedIndex = "0";
+        }
+        document.getElementById("root").style.backgroundImage = 'url(https://images3.alphacoders.com/693/693872.jpg)';
+
+        UpdateGameTitleAndTime();
+      }
+      else{
+        steamNameVerifyInfo.innerHTML = "Uh Oh. Make sure you have your steam profile set to Public so I can can show you your games!"
+      }
+    });
+  }
 }
 
 function SortByGameName(a, b){

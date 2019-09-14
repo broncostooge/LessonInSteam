@@ -18,6 +18,10 @@ class EnterSteamUserName extends Component {
         const styles = {
             display: 'none'
         }
+
+        let elementById_root = document.getElementById("root");
+        elementById_root.style.backgroundImage = 'none';
+
         return(
             <Provider store={store} >
                 <div>

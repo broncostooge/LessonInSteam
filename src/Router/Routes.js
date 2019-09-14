@@ -19,12 +19,13 @@ export default class Routes extends Component {
             )} />
         )
 
-        let isAuthenticated = store.getState().isAuthenticated;
         return(
             <Switch>
-                <Route exact path='/' component={AuthenticateUser}/>
-                <PrivateRoute exact path='/VerifySteamUser' component={EnterSteamUserName}/>
-                <PrivateRoute exact path='/LessonInSteam' component={UpdateAndLoadGameInfo}/>
+                <Route exact path='/' component={EnterSteamUserName}/>
+                <Route exact path='/VerifySteamUser' component={EnterSteamUserName}/>
+                <Route exact path='/LessonInSteam' component={UpdateAndLoadGameInfo}/>
+                {/*<Route exact path='/VerifySteamUser' component={EnterSteamUserName}/>
+                <Route exact path='/LessonInSteam' component={UpdateAndLoadGameInfo}/>*/}
             </Switch>
         );
     };

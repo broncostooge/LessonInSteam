@@ -37,6 +37,13 @@ class UpdateAndLoadGameInfo extends Component {
         const milesTitle = "Miles";
         const timeInDayAndYearTitle = "Game Time Played In Years";
         const topFiveGamesTitle = "Top 5 Games";
+        const starWarsGif = <iframe src="https://giphy.com/embed/xTiTnJK44NXT46iKYM" width="150" height="125" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
+        const coastToCoastGif = <iframe src="https://giphy.com/embed/5ED4Nf8bHRo64" width="150" height="125" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
+        const footballGif = <iframe src="https://giphy.com/embed/1APe0vrSrI5K4Hiy6u" width="150" height="125" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
+        const apolloGif = <iframe src="https://giphy.com/embed/3o6Zt0X8dH8H3svy1i" width="150" height="125" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
+        const milesGif = <iframe src="https://giphy.com/embed/26BRvWBU88d3pbe2Q" width="150" height="125" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
+        const timeinDayAndYearGif = <iframe src="https://giphy.com/embed/l1J9RYDHqVp5phcYw" width="150" height="125" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
+        const topFiveGamesGif = <iframe src="https://giphy.com/embed/3ov9k1lJ0A2o4OQew8" width="150" height="125" frameBorder="0" className="giphy-embed" allowFullScreen></iframe>;
 
         let GTInYearTime = 0;
         let GTInDayTime = 0;
@@ -115,18 +122,18 @@ class UpdateAndLoadGameInfo extends Component {
                 <div>
                     <Grid container spacing={0}>
                         <Grid className='InnerGrid' item xs={4}>
-                            <Card styles = {selectStyles} title = {starWarsTitle} text = {starWarsText} />
+                            <Card styles = {selectStyles} title = {starWarsTitle} text = {starWarsText} gif ={starWarsGif} />
                         </Grid>
                         <Grid className='InnerGridInput' item xs={4}>
                             <select onChange={SetBackgroundImage} id="gameList" style={selectStyles}>{allOption}{gameListToDisplay}</select>
                             <Button id="SignOut" variant="contained" color="primary" onClick={() => signOut(this.props)}>SignOut</Button>
                         </Grid>
                         <Grid className='InnerGrid' item xs={4}>
-                            <Card styles = {selectStyles} title = {timeInDayAndYearTitle} text = {timeInDayAndYearText} />
+                            <Card styles = {selectStyles} title = {timeInDayAndYearTitle} text = {timeInDayAndYearText} gif={timeinDayAndYearGif}/>
                         </Grid>
                         
                         <Grid className='InnerGrid' item xs={4}>
-                            <Card styles = {selectStyles} title = {coastToCoastTitle} text = {coastToCoastText} />
+                            <Card styles = {selectStyles} title = {coastToCoastTitle} text = {coastToCoastText} gif={coastToCoastGif}/>
                         </Grid>
                         <Grid className='InnerGridMainParent' item xs={4}>
 
@@ -134,17 +141,17 @@ class UpdateAndLoadGameInfo extends Component {
                             <img className = 'MainInfoLogo' style={selectStyles} alt={selectedGameAppID} src={logoImageSrc}/>
                         </Grid>
                         <Grid className='InnerGrid' item xs={4}>
-                            <Card styles = {selectStyles} title = {milesTitle} text = {milesText} />
+                            <Card styles = {selectStyles} title = {milesTitle} text = {milesText} gif={milesGif}/>
                         </Grid>
 
                         <Grid className='InnerGrid' item xs={4}>
-                            <Card styles = {selectStyles} title = {footballTitle} text = {footballText} />
+                            <Card styles = {selectStyles} title = {footballTitle} text = {footballText} gif={footballGif}/>
                         </Grid>
                         <Grid className='InnerGrid' item xs={4}>
-                            <Card styles = {selectStyles} title = {apolloTitle} text = {apolloText} />
+                            <Card styles = {selectStyles} title = {apolloTitle} text = {apolloText} gif={apolloGif}/>
                         </Grid>
                         <Grid className='InnerGrid' item xs={4}>
-                            <Card styles = {selectStyles} title = {topFiveGamesTitle} text = {topFiveGamesText} />
+                            <Card styles = {selectStyles} title = {topFiveGamesTitle} text = {topFiveGamesText} gif={topFiveGamesGif}/>
                         </Grid>
                     </Grid>
                 </div>

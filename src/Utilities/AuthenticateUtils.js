@@ -27,7 +27,7 @@ var myMSALObj = new Msal.UserAgentApplication(msalConfig);
 
 // Register Callbacks for redirect flow
 // myMSALObj.handleRedirectCallbacks(acquireTokenRedirectCallBack, acquireTokenErrorRedirectCallBack);
-myMSALObj.handleRedirectCallback(authRedirectCallBack);
+ myMSALObj.handleRedirectCallback(authRedirectCallBack);
 
 export function signIn(props) {
     myMSALObj.loginPopup(requestObj).then(function (loginResponse) {
